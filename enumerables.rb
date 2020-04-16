@@ -1,10 +1,16 @@
 module Enumerable
-  # def my_each
-  #   (is_a? Hash) ? (self.length).times {|element| yield(keys[element], self[keys[element]])} : self.length.times {|element| yield(self[element])}
-  # end
+  def my_each
+    (is_a? Hash) ? (self.length).times {|element| yield(keys[element], self[keys[element]])} : self.length.times {|element| yield(self[element])}
+  end
   
   def my_each_with_index
     self.length.times {|element| yield(self[element], element)}
+  end
+
+  def my_select
+    new_array=[]
+    my_each {|x| new_array.push(x) if yield(x)}
+    new_array
   end
 end
   # array_check = %w(array hash 01258 symbol true 999)
@@ -26,18 +32,26 @@ end
   # hash_check.each {|x, y| puts "#{x}: #{y}" }
   # hash_check.each {|x, y| puts x }
   
-  array_check = %w(array hash 01258 symbol true 999)
-  puts "Check for my_each_with_index method"
+  # array_check = %w(array hash 01258 symbol true 999)
+  # puts "Check for my_each_with_index method"
+  # puts ""
+  # array_check.my_each_with_index { |x, y| puts " #{x} with an index #{y}" }
+  # puts ""
+  # puts "Compare results with .each_with_index method"
+  # puts ""
+  # array_check.each_with_index { |x, y| puts " #{x} with an index #{y}" }
+  
+  puts "Check for my_select method"
+  print (1..100).to_a.my_select { |item| item % 10 == 0 }
   puts ""
-  array_check.my_each_with_index { |x, y| puts " #{x} with an index #{y}" }
+  print %w(London, Paris, Rome, Lisbon, Geneva, Budapest).my_select {|x| x.include? "s"}
   puts ""
-  puts "Compare results with .each_with_index method"
   puts ""
-  array_check.each_with_index { |x, y| puts " #{x} with an index #{y}" }
-
-  # def my_select
-
-  # end
+  puts "Compare results with .select method"
+  print (1..100).to_a.select { |item| item % 10 == 0 }
+  puts ""
+  print %w(London, Paris, Rome, Lisbon, Geneva, Budapest).select {|x| x.include? "s"}
+  puts ""
 
   # def my_all? 
 
