@@ -54,6 +54,18 @@ module Enumerable
     end
     condition
   end
+  
+  def my_count(par = nil)
+    index = 0
+    if par
+      my_each {|element| index += 1 if element == par}
+    elsif block_given? 
+      my_each {|element| index += 1 if yield(element)}
+    else  
+      index = length
+    end
+    index
+  end
 end
 
 
@@ -137,30 +149,34 @@ end
   # puts [3, 3, 3].any?(3)
   # puts [3, 3, 1].any?(2)
 
-puts %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
-puts %w{ant bear cat}.my_none? { |word| word.length >= 4 } #=> false
-puts %w{ant bear cat}.my_none?(/d/)                        #=> true
-puts [1, 3.14, 42].my_none?(Float)                         #=> false
-puts [].my_none?                                           #=> true
-puts [nil].my_none?                                        #=> true
-puts [nil, false].my_none?                                 #=> true
-puts [nil, false, true].my_none?                           #=> false
-puts ""
-puts ""
-puts %w{ant bear cat}.none? { |word| word.length == 5 } #=> true
-puts %w{ant bear cat}.none? { |word| word.length >= 4 } #=> false
-puts %w{ant bear cat}.none?(/d/)                        #=> true
-puts [1, 3.14, 42].none?(Float)                         #=> false
-puts [].none?                                           #=> true
-puts [nil].none?                                        #=> true
-puts [nil, false].none?                                 #=> true
-puts [nil, false, true].none?                           #=> false
+# puts %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
+# puts %w{ant bear cat}.my_none? { |word| word.length >= 4 } #=> false
+# puts %w{ant bear cat}.my_none?(/d/)                        #=> true
+# puts [1, 3.14, 42].my_none?(Float)                         #=> false
+# puts [].my_none?                                           #=> true
+# puts [nil].my_none?                                        #=> true
+# puts [nil, false].my_none?                                 #=> true
+# puts [nil, false, true].my_none?                           #=> false
+# puts ""
+# puts ""
+# puts %w{ant bear cat}.none? { |word| word.length == 5 } #=> true
+# puts %w{ant bear cat}.none? { |word| word.length >= 4 } #=> false
+# puts %w{ant bear cat}.none?(/d/)                        #=> true
+# puts [1, 3.14, 42].none?(Float)                         #=> false
+# puts [].none?                                           #=> true
+# puts [nil].none?                                        #=> true
+# puts [nil, false].none?                                 #=> true
+# puts [nil, false, true].none?                           #=> false
 
-
-  # def my_count
-
-  # end
-
+# ary = [1, 2, 4, 2]
+# puts ary.my_count               #=> 4
+# puts ary.my_count(2)            #=> 2
+# puts ary.my_count{ |x| x%2==0 } #=> 3
+# puts ""
+# puts ""
+# puts ary.count               #=> 4
+# puts ary.count(2)            #=> 2
+# puts ary.count{ |x| x%2==0 } #=> 3
   # def my_map
 
   # end
