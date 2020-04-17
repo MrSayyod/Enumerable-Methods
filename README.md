@@ -4,7 +4,7 @@ Project: Advanced Building Blocks - Enumerables by Microverse (created by Sayyod
 
 
 # Built With
-1. Ruby 2.7.1
+    Ruby 2.7.1
 
 # Getting Started
 # Prerequisites

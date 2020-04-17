@@ -35,7 +35,7 @@ module Enumerable
       my_each { |element| condition = true if element }
     elsif block_given?
       my_each { |element| condition = true if yield(element) }
-    else
+    else 
       true
     end
     condition
