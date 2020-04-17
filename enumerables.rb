@@ -72,12 +72,19 @@ module Enumerable
     my_each {|element| new_array.push(yield(element))}
     new_array
   end
+  
+    def my_inject(*par)
+      new_array = is_a?(Array) ? self : to_a
+      memo = par[0]
+      new_array.my_each {|element| memo = memo ? yield(memo, element) : element}
+      memo
+    end
 end
 
-  # array_check = %w(array hash 01258 symbol true 999)
-  # hash_check = { :Name => "Microverse",
-  #   :CEO => "Ariel Camus",
-  #   "Current year" => 2020,
+# array_check = %w(array hash 01258 symbol true 999)
+# hash_check = { :Name => "Microverse",
+#   :CEO => "Ariel Camus",
+#   "Current year" => 2020,
   #   "Student" => "Sayyod",
   # }
 
@@ -189,10 +196,21 @@ end
 # print ["a", "b", "c"].map { |string| string.upcase }
 # puts "" 
 
+puts (5..10).my_inject { |sum, n| sum + n }            #=> 45
+puts (5..10).my_inject(1) { |product, n| product * n } #=> 151200
+longest = %w{ cat sheep bear }.my_inject do |memo, word|
+   memo.length > word.length ? memo : word
+end
+puts longest
+puts ""                                        
+puts ""                                        
+puts (5..10).inject { |sum, n| sum + n }            #=> 45
+puts (5..10).inject(1) { |product, n| product * n } #=> 151200
+longest = %w{ cat sheep bear }.inject do |memo, word|
+   memo.length > word.length ? memo : word
+end
+puts longest                                        #=> "sheep"
 
-  # def my_inject
-
-  # end
 
   # def multiply_els
 
