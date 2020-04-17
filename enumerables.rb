@@ -26,20 +26,24 @@ module Enumerable
     end
     condition
   end
+  
+  def my_any?(*par)
+    condition = false
+    if !par[0].nil?
+      my_each { |element| condition = true if par[0] === element } 
+    elsif !block_given?
+      my_each { |element| condition = true if element}
+    elsif block_given?
+      my_each { |element| condition = true if yield(element)}
+    else 
+      true
+    end
+    condition
+  end
+  
 end
 
-#   def my_all?(*arg)
-#     result = true
-#     if !arg[0].nil?
-#       my_each { |i| result = false unless arg[0] === i } # rubocop:disable Style/CaseEquality
-#     elsif !block_given?
-#       my_each { |i| result = false unless i }
-#     else
-#       my_each { |i| result = false unless yield(i) }
-#     end
-#     result
-#   end
-# end
+
   # array_check = %w(array hash 01258 symbol true 999)
   # hash_check = { :Name => "Microverse",
   #   :CEO => "Ariel Camus",
@@ -80,27 +84,43 @@ end
   # print %w(London, Paris, Rome, Lisbon, Geneva, Budapest).select {|x| x.include? "s"}
   # puts ""
 
-  puts %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
-  puts %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
-  puts %w[ant bear cat].my_all?(/t/)                        #=> false
-  puts [1, 2i, 3.14].my_all?(Numeric)                       #=> true
-  puts [nil, true, 99].my_all?                              #=> false
-  puts [].my_all?   
-  puts [3, 3, 3].my_all?(3)
-  puts [3, 3, 1].my_all?(3)
-  puts ''
-  puts ''
-  puts %w[ant bear cat].all? { |word| word.length >= 3 } #=> true
-  puts %w[ant bear cat].all? { |word| word.length >= 4 } #=> false
-  puts %w[ant bear cat].all?(/t/)                        #=> false
-  puts [1, 2i, 3.14].all?(Numeric)                       #=> true
-  puts [nil, true, 99].all?                              #=> false
-  puts [].all?                                           #=> true
-  puts [3, 3, 3].all?(3)
-  puts [3, 3, 1].all?(3)
-  # def my_any?
+  # puts %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
+  # puts %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
+  # puts %w[ant bear cat].my_all?(/t/)                        #=> false
+  # puts [1, 2i, 3.14].my_all?(Numeric)                       #=> true
+  # puts [nil, true, 99].my_all?                              #=> false
+  # puts [].my_all?   
+  # puts [3, 3, 3].my_all?(3)
+  # puts [3, 3, 1].my_all?(3)
+  # puts ''
+  # puts ''
+  # puts %w[ant bear cat].all? { |word| word.length >= 3 } #=> true
+  # puts %w[ant bear cat].all? { |word| word.length >= 4 } #=> false
+  # puts %w[ant bear cat].all?(/t/)                        #=> false
+  # puts [1, 2i, 3.14].all?(Numeric)                       #=> true
+  # puts [nil, true, 99].all?                              #=> false
+  # puts [].all?                                           #=> true
+  # puts [3, 3, 3].all?(3)
+  # puts [3, 3, 1].all?(3)
 
-  # end
+  puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
+  puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> false
+  puts %w[ant bear cat].my_any?(/d/)                        #=> false
+  puts [1, 2i, 3.14].my_any?(Integer)                       #=> true
+  puts [nil, true, 99].my_any?                              #=> false
+  puts [].my_any?   
+  puts [3, 3, 3].my_any?(3)
+  puts [3, 3, 1].my_any?(2)
+  puts ''
+  puts ''
+  puts %w[ant bear cat].any? { |word| word.length >= 3 } 
+  puts %w[ant bear cat].any? { |word| word.length >= 4 } 
+  puts %w[ant bear cat].any?(/d/)                       
+  puts [1, 2i, 3.14].any?(Integer)                       
+  puts [nil, true, 99].any?                              
+  puts [].any?                                           
+  puts [3, 3, 3].any?(3)
+  puts [3, 3, 1].any?(2)
 
   # def my_none?
 
