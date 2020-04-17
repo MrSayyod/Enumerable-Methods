@@ -68,9 +68,6 @@ module Enumerable
   end
 end
 
-
-
-
   # array_check = %w(array hash 01258 symbol true 999)
   # hash_check = { :Name => "Microverse",
   #   :CEO => "Ariel Camus",
