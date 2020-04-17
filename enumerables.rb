@@ -67,18 +67,22 @@ module Enumerable
     index
   end
   
-  def my_map
+  def my_map(proc = nil)
     new_array = []
-    my_each {|element| new_array.push(yield(element))}
+    my_each {|element| new_array.push(proc.nil? ? yield(element) : proc.call(element))}
     new_array
   end
   
-    def my_inject(*par)
-      new_array = is_a?(Array) ? self : to_a
+  def my_inject(*par)
+    new_array = is_a?(Array) ? self : to_a
       memo = par[0]
       new_array.my_each {|element| memo = memo ? yield(memo, element) : element}
       memo
     end
+    
+    def multiply_els
+      self.my_inject {|memo, element| memo * element}
+  end
 end
 
 # array_check = %w(array hash 01258 symbol true 999)
@@ -188,35 +192,29 @@ end
 # puts ary.count(2)            #=> 2
 # puts ary.count{ |x| x%2==0 } #=> 3
 
-# print (1..10).to_a.my_map { |i| i*i }      #=> [1, 4, 9, 16]
-# puts ""
-# print ["a", "b", "c"].my_map { |string| string.upcase }
-# puts "" 
-# puts "" 
-# print ["a", "b", "c"].map { |string| string.upcase }
-# puts "" 
+print (1..10).to_a.my_map { |i| i*i }      #=> [1, 4, 9, 16]
+puts ""
+print ["a", "b", "c"].my_map { |string| string.upcase }
+puts "" 
+puts "" 
+print ["a", "b", "c"].map { |string| string.upcase }
+puts "" 
 
-puts (5..10).my_inject { |sum, n| sum + n }            #=> 45
-puts (5..10).my_inject(1) { |product, n| product * n } #=> 151200
-longest = %w{ cat sheep bear }.my_inject do |memo, word|
-   memo.length > word.length ? memo : word
-end
-puts longest
-puts ""                                        
-puts ""                                        
-puts (5..10).inject { |sum, n| sum + n }            #=> 45
-puts (5..10).inject(1) { |product, n| product * n } #=> 151200
-longest = %w{ cat sheep bear }.inject do |memo, word|
-   memo.length > word.length ? memo : word
-end
-puts longest                                        #=> "sheep"
+# puts (5..10).my_inject { |sum, n| sum + n }            #=> 45
+# puts (5..10).my_inject(1) { |product, n| product * n } #=> 151200
+# longest = %w{ cat sheep bear }.my_inject do |memo, word|
+#    memo.length > word.length ? memo : word
+# end
+# puts longest
+# puts ""                                        
+# puts ""                                        
+# puts (5..10).inject { |sum, n| sum + n }            #=> 45
+# puts (5..10).inject(1) { |product, n| product * n } #=> 151200
+# longest = %w{ cat sheep bear }.inject do |memo, word|
+#    memo.length > word.length ? memo : word
+# end
+# puts longest                                        #=> "sheep"
 
+puts [2, 4, 5].multiply_els
 
-  # def multiply_els
-
-  # end
-
-  # my_map = Proc.new do 
-
-  # end
 # end
