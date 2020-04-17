@@ -1,5 +1,6 @@
 module Enumerable
   def my_each
+    return to_enum(:my_each) unless block_given?
     if is_a? Hash
       length.times { |element| yield(keys[element], self[keys[element]]) }
     else
@@ -8,10 +9,12 @@ module Enumerable
   end
 
   def my_each_with_index
+    return to_enum(:my_each) unless block_given?
     length.times { |element| yield(self[element], element) }
   end
 
   def my_select
+    return to_enum(:my_select) unless block_given?
     new_array = []
     my_each { |element| new_array.push(element) if yield(element) }
     new_array
@@ -66,6 +69,7 @@ module Enumerable
   end
 
   def my_map(proc = nil)
+    return to_enum(:my_map) unless block_given?
     new_array = []
     my_each { |element| new_array.push(proc.nil? ? yield(element) : proc.call(element)) }
     new_array
