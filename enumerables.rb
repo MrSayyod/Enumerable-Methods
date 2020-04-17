@@ -66,6 +66,12 @@ module Enumerable
     end
     index
   end
+  
+  def my_map
+    new_array = []
+    my_each {|element| new_array.push(yield(element))}
+    new_array
+  end
 end
 
   # array_check = %w(array hash 01258 symbol true 999)
@@ -174,9 +180,15 @@ end
 # puts ary.count               #=> 4
 # puts ary.count(2)            #=> 2
 # puts ary.count{ |x| x%2==0 } #=> 3
-  # def my_map
 
-  # end
+# print (1..10).to_a.my_map { |i| i*i }      #=> [1, 4, 9, 16]
+# puts ""
+# print ["a", "b", "c"].my_map { |string| string.upcase }
+# puts "" 
+# puts "" 
+# print ["a", "b", "c"].map { |string| string.upcase }
+# puts "" 
+
 
   # def my_inject
 
