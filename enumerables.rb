@@ -41,7 +41,22 @@ module Enumerable
     condition
   end
   
+  def my_none?(*par)
+    condition = true
+    if !par[0].nil?
+      my_each { |element| condition = false if par[0] === element } 
+    elsif !block_given?
+      my_each { |element| condition = false if element}
+    elsif block_given?
+      my_each { |element| condition = false if yield(element)}
+    else 
+      false
+    end
+    condition
+  end
 end
+
+
 
 
   # array_check = %w(array hash 01258 symbol true 999)
@@ -103,28 +118,44 @@ end
   # puts [3, 3, 3].all?(3)
   # puts [3, 3, 1].all?(3)
 
-  puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
-  puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> false
-  puts %w[ant bear cat].my_any?(/d/)                        #=> false
-  puts [1, 2i, 3.14].my_any?(Integer)                       #=> true
-  puts [nil, true, 99].my_any?                              #=> false
-  puts [].my_any?   
-  puts [3, 3, 3].my_any?(3)
-  puts [3, 3, 1].my_any?(2)
-  puts ''
-  puts ''
-  puts %w[ant bear cat].any? { |word| word.length >= 3 } 
-  puts %w[ant bear cat].any? { |word| word.length >= 4 } 
-  puts %w[ant bear cat].any?(/d/)                       
-  puts [1, 2i, 3.14].any?(Integer)                       
-  puts [nil, true, 99].any?                              
-  puts [].any?                                           
-  puts [3, 3, 3].any?(3)
-  puts [3, 3, 1].any?(2)
+  # puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
+  # puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> false
+  # puts %w[ant bear cat].my_any?(/d/)                        #=> false
+  # puts [1, 2i, 3.14].my_any?(Integer)                       #=> true
+  # puts [nil, true, 99].my_any?                              #=> false
+  # puts [].my_any?   
+  # puts [3, 3, 3].my_any?(3)
+  # puts [3, 3, 1].my_any?(2)
+  # puts ''
+  # puts ''
+  # puts %w[ant bear cat].any? { |word| word.length >= 3 } 
+  # puts %w[ant bear cat].any? { |word| word.length >= 4 } 
+  # puts %w[ant bear cat].any?(/d/)                       
+  # puts [1, 2i, 3.14].any?(Integer)                       
+  # puts [nil, true, 99].any?                              
+  # puts [].any?                                           
+  # puts [3, 3, 3].any?(3)
+  # puts [3, 3, 1].any?(2)
 
-  # def my_none?
+puts %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
+puts %w{ant bear cat}.my_none? { |word| word.length >= 4 } #=> false
+puts %w{ant bear cat}.my_none?(/d/)                        #=> true
+puts [1, 3.14, 42].my_none?(Float)                         #=> false
+puts [].my_none?                                           #=> true
+puts [nil].my_none?                                        #=> true
+puts [nil, false].my_none?                                 #=> true
+puts [nil, false, true].my_none?                           #=> false
+puts ""
+puts ""
+puts %w{ant bear cat}.none? { |word| word.length == 5 } #=> true
+puts %w{ant bear cat}.none? { |word| word.length >= 4 } #=> false
+puts %w{ant bear cat}.none?(/d/)                        #=> true
+puts [1, 3.14, 42].none?(Float)                         #=> false
+puts [].none?                                           #=> true
+puts [nil].none?                                        #=> true
+puts [nil, false].none?                                 #=> true
+puts [nil, false, true].none?                           #=> false
 
-  # end
 
   # def my_count
 
