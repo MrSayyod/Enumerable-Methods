@@ -1,6 +1,10 @@
 module Enumerable
   def my_each
-    is_a? Hash ? length.times { |element| yield(keys[element], self[keys[element]]) } : length.times { |element| yield(self[element]) }
+    if is_a? Hash
+      length.times { |element| yield(keys[element], self[keys[element]]) }
+    else
+      length.times { |element| yield(self[element]) }
+    end
   end
 
   def my_each_with_index
@@ -19,10 +23,8 @@ module Enumerable
       my_each { |element| condition = false unless par[0] === element } # rubocop:disable Style/CaseEquality
     elsif !block_given?
       my_each { |element| condition = false unless element }
-    elsif block_given?
-      my_each { |element| condition = false unless yield(element) }
     else
-      false
+      my_each { |element| condition = false unless yield(element) }
     end
     condition
   end
@@ -33,10 +35,8 @@ module Enumerable
       my_each { |element| condition = true if par[0] === element } # rubocop:disable Style/CaseEquality
     elsif !block_given?
       my_each { |element| condition = true if element }
-    elsif block_given?
+    else
       my_each { |element| condition = true if yield(element) }
-    else 
-      true
     end
     condition
   end
@@ -47,10 +47,8 @@ module Enumerable
       my_each { |element| condition = false if par[0] === element } # rubocop:disable Style/CaseEquality
     elsif !block_given?
       my_each { |element| condition = false if element }
-    elsif block_given?
-      my_each { |element| condition = false if yield(element) }
     else
-      false
+      my_each { |element| condition = false if yield(element) }
     end
     condition
   end
