@@ -80,9 +80,13 @@ module Enumerable
   end
 
   def my_inject(*par)
-    new_array = is_a?(Array) ? self : to_a
-    memo = par[0]
-    new_array.my_each { |element| memo = memo ? yield(memo, element) : element }
+    memo = par[0] if par[0].is_a? Integer
+    if par[0].is_a?(Symbol) || par[0].is_a?(String)
+      my_each { |element| memo = memo ? memo.send(par[0], element) : element }
+      memo
+    else
+      my_each { |element| memo = memo ? yield(memo, element) : element }
+    end
     memo
   end
 
