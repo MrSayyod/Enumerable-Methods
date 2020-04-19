@@ -35,28 +35,20 @@ module Enumerable
     condition
   end
 
-  def my_any?(*par)
+  def my_any?(par = nil, &block)
     condition = false
-    if !par[0].nil?
-      my_each { |element| condition = true if par[0] === element } # rubocop:disable Style/CaseEquality
+    if !par.nil?
+      my_each { |element| condition = true if par === element } # rubocop:disable Style/CaseEquality
     elsif !block_given?
       my_each { |element| condition = true if element }
     else
-      my_each { |element| condition = true if yield(element) }
+      my_each { |element| condition = true if block.call(element) }
     end
     condition
   end
 
-  def my_none?(*par)
-    condition = true
-    if !par[0].nil?
-      my_each { |element| condition = false if par[0] === element } # rubocop:disable Style/CaseEquality
-    elsif !block_given?
-      my_each { |element| condition = false if element }
-    else
-      my_each { |element| condition = false if yield(element) }
-    end
-    condition
+  def my_none?(par = nil, &block)
+    !my_any?(par, &block)
   end
 
   def my_count(par = nil)
@@ -79,18 +71,23 @@ module Enumerable
     new_array
   end
 
-  def my_inject(*par)
+  def my_inject(*par) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    new_array = is_a?(Array) ? self : to_a
     memo = par[0] if par[0].is_a? Integer
     if par[0].is_a?(Symbol) || par[0].is_a?(String)
-      my_each { |element| memo = memo ? memo.send(par[0], element) : element }
+      sym = par[0]
+    elsif par[0].is_a?(Integer)
+      sym = par[1] if par[1].is_a?(Symbol) || par[1].is_a?(String)
+    end
+    if sym
+      new_array.my_each { |element| memo = memo ? memo.send(sym, element) : element }
       memo
     else
-      my_each { |element| memo = memo ? yield(memo, element) : element }
+      new_array.my_each { |element| memo = memo ? yield(memo, element) : element }
     end
     memo
   end
-
-  def multiply_els
-    my_inject { |memo, element| memo * element }
-  end
+end
+def multiply_els
+  my_inject { |memo, element| memo * element }
 end
