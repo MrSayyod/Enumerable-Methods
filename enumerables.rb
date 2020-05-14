@@ -95,12 +95,3 @@ end
 def multiply_els
   my_inject { |memo, element| memo * element }
 end
-a = [1, 2, 3, 4, 5]
-# q = ['one', 'two', 'three', 'four', 'five']
-# b = []
-# # c = a.each { |x| b.push(x + 2) }
-# p q
-# q.my_each_with_index {|element, index| b.push("[#{element}]'s index is #{index}")}
-# p b
-b = a.select {|x| x>2}
-p b
