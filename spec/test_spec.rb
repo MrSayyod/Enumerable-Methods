@@ -45,18 +45,31 @@ describe Enumerable do
         expected = empty_array
         array_with_strings.each_with_index {|element, index| expected.push("#{element}'s index is #{index}")}
         expect(actual).to eql(expected)
-        end
+      end
       it 'should return each item as requested with indexes' do
         actual = empty_array
         array_with_strings.my_each_with_index {|element, index| actual.push("[#{element}]'s index is #{index}")}
         expect(actual).to eql(["[one]'s index is 0", "[two]'s index is 1", "[three]'s index is 2", "[four]'s index is 3", "[five]'s index is 4"])
-        end
+      end
     end
   end
-
+  
   describe '#my_select' do
-    it 'checks select method' do
-      
+    context 'when no block given' do
+      it 'should return to Enumerator' do
+        expect(array_with_numbers.my_select).to be_a(Enumerator)
+      end
+    end
+    
+    context 'if block given ' do
+      it 'should return selected items' do
+        expect(array_with_numbers.my_select {|x| x>=3}).to eql([3, 4, 5])
+      end
+      it 'should pass the test if results of my_select and select methods are equal' do
+        actual = array_with_numbers.my_select {|x| x>=3}
+        expected = array_with_numbers.select {|x| x>=3} 
+        expect(actual).to eql(expected)
+      end
     end
   end
 
