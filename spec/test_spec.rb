@@ -1,4 +1,4 @@
-require '../enumerables'
+require_relative '../enumerables'
 describe Enumerable do
   let(:array_with_numbers) { [1, 2, 3, 4, 5] }
   let(:array_with_strings) { %w[one two three four five] }
