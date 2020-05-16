@@ -5,7 +5,11 @@ module Enumerable
     if is_a? Hash
       length.times { |element| yield(keys[element], self[keys[element]]) }
     else
-      length.times { |element| yield(self[element]) }
+      element = 0
+      while element < length
+        yield(self[element])
+        element += 1
+      end
     end
   end
 
